@@ -8,18 +8,22 @@ import net.serenitybdd.screenplay.rest.interactions.Get;
 
 import static net.serenitybdd.screenplay.Tasks.instrumented;
 
+//implements Task
 public class GetUsers implements Task {
 
     private final int page;
 
+    //constructor
     public GetUsers(int page) {
         this.page = page;
     }
 
+    //method Factory - return number page
     public static Performable fromPage(int page) {
         return instrumented(GetUsers.class, page);
     }
 
+    //implement performAs
     @Override
     public <T extends Actor> void performAs(T actor) {
         actor.attemptsTo(

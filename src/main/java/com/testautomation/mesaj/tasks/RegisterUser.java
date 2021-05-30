@@ -22,6 +22,7 @@ public class RegisterUser implements Task {
 
     @Override
     public <T extends Actor> void performAs(T actor) {
+
         actor.attemptsTo(
                 Post.to("/register").with(
                         requestSpecification -> requestSpecification

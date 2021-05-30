@@ -32,6 +32,6 @@ public class NetflixPlans implements Fact {
     }
 
     public String toString() {
-        return "Los planes son " + plansInfo;
+        return "The plans are: " + plansInfo;
     }
 }

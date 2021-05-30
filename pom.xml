@@ -8,10 +8,6 @@
   <artifactId>serenitybddrestinspanishtraining</artifactId>
   <version>1.0-SNAPSHOT</version>
 
-  <name>serenitybddrestinspanishtraining</name>
-
-  <url>https://github.com/jdmesalosada/serenitybddrestinspanishtraining</url>
-
   <properties>
     <java.version>1.8</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

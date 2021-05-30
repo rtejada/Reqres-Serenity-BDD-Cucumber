@@ -1,6 +1,8 @@
 package com.testautomation.mesaj.models.users;
 
-public class RegisterUserInfo {
+import java.util.Arrays;
+
+public class RegUserInfo {
 
     private String name;
     private String job;
@@ -39,4 +41,5 @@ public class RegisterUserInfo {
     public void setPassword(String password) {
         this.password = password;
     }
+
 }

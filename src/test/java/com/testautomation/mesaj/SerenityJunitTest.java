@@ -1,9 +1,11 @@
 package com.testautomation.mesaj;
 
 import com.testautomation.mesaj.facts.NetflixPlans;
+import com.testautomation.mesaj.models.register.RegResponse;
 import com.testautomation.mesaj.models.users.Datum;
-import com.testautomation.mesaj.models.users.RegisterUserInfo;
-import com.testautomation.mesaj.questions.GetUsersQuestion;
+import com.testautomation.mesaj.models.users.RegUserInfo;
+import com.testautomation.mesaj.questions.GetQuestion;
+import com.testautomation.mesaj.questions.PostResponse;
 import com.testautomation.mesaj.questions.ResponseCode;
 import com.testautomation.mesaj.tasks.GetUsers;
 import com.testautomation.mesaj.tasks.RegisterUser;
@@ -20,12 +22,12 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
 
 @RunWith(SerenityRunner.class)
-public class SerenityBddTest {
+public class SerenityJunitTest {
 
     private final String restApiUrl = "http://localhost:5000/api";
 
     @Test
-    public void initialTest() {
+    public void GetUsersTest() {
         Actor roxanne = Actor.named("roxanne the trainer")
                 .whoCan(CallAnApi.at(restApiUrl));
 
@@ -34,12 +36,15 @@ public class SerenityBddTest {
         );
 
         roxanne.should(
-                seeThat("The status code is: ", new ResponseCode(), equalTo(200))
+                seeThat("The status code is: ", ResponseCode.was(), equalTo(200))
         );
 
 
-        Datum user = new GetUsersQuestion().answeredBy(roxanne)
-                .getData().stream().filter(x -> x.getId() == 1).findFirst().orElse(null);
+        Datum user = new GetQuestion().answeredBy(roxanne)
+                .getData()
+                .stream()
+                .filter(x -> x.getId() == 1)
+                .findFirst().orElse(null);
 
 
         roxanne.should(
@@ -73,28 +78,38 @@ public class SerenityBddTest {
                 seeThat("the status code is: ", new ResponseCode(), equalTo(200))
         );
 
+
     }
 
     @Test
-    public void registerUserTest2() {
+    public void registerUserTestWithModels() {
+
         Actor roxanne = Actor.named("roxanne the trainer")
                 .whoCan(CallAnApi.at(restApiUrl));
 
-        RegisterUserInfo registerUserInfo = new RegisterUserInfo();
+        RegUserInfo regUserInfo = new RegUserInfo();
 
-        registerUserInfo.setName("morpheus");
-        registerUserInfo.setJob("leader");
-        registerUserInfo.setEmail("tracey.ramos@reqres.in");
-        registerUserInfo.setPassword("serenity");
+        regUserInfo.setName("morpheus");
+        regUserInfo.setJob("leader");
+        regUserInfo.setEmail("tracey.ramos@reqres.in");
+        regUserInfo.setPassword("serenity");
 
         roxanne.attemptsTo(
-                RegisterUser.withInfo(registerUserInfo)
+                RegisterUser.withInfo(regUserInfo)
 
         );
 
         roxanne.should(
                 seeThat("The status code is", new ResponseCode(), equalTo(200))
         );
+
+         //obtenemos la respuesta, esta respuesta esta mapeada en la clase register>RegResponse
+        PostResponse data = new PostResponse();
+        RegResponse responseBody = data.answeredBy(roxanne);
+        System.out.println(responseBody.getId());
+        System.out.println(responseBody.getToken());
+
+
     }
 
     @Test
@@ -102,23 +117,23 @@ public class SerenityBddTest {
 
         Actor roxanne = Actor.named("roxanne the trainer")
                 .whoCan(CallAnApi.at(restApiUrl));
-        RegisterUserInfo registerUserInfo = new RegisterUserInfo();
+        RegUserInfo regUserInfo = new RegUserInfo();
 
-        registerUserInfo.setName("roxanne");
-        registerUserInfo.setJob("Software Develop");
-        registerUserInfo.setEmail("lindsay.ferguson@reqres.in");
-        registerUserInfo.setPassword("serenity");
+        regUserInfo.setName("roxanne");
+        regUserInfo.setJob("Software Develop");
+        regUserInfo.setEmail("lindsay.ferguson@reqres.in");
+        regUserInfo.setPassword("serenity");
 
         roxanne.attemptsTo(
-                UpdateUser.withInfo(registerUserInfo)
+                UpdateUser.withInfo(regUserInfo)
         );
         roxanne.should(
                 seeThat("The response code", new ResponseCode(), Matchers.equalTo(200))
         );
 
         roxanne.should(
-                seeThat("The user email is: ", act -> registerUserInfo.getName(), Matchers.equalTo("roxanne")),
-                seeThat("The first name is: ", act -> registerUserInfo.getJob(), Matchers.equalTo("Software Develop"))
+                seeThat("The user email is: ", act -> regUserInfo.getName(), Matchers.equalTo("roxanne")),
+                seeThat("The first name is: ", act -> regUserInfo.getJob(), Matchers.equalTo("Software Develop"))
         );
 
     }

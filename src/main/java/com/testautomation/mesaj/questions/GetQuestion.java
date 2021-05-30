@@ -6,7 +6,7 @@ import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Question;
 
 
-public class GetUsersQuestion implements Question {
+public class GetQuestion implements Question {
 
     @Override
     public Users answeredBy(Actor actor) {
